@@ -105,8 +105,12 @@ checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 name = "backend"
 version = "0.1.0"
 dependencies = [
+ "chrono",
+ "common",
  "rocket",
  "rocket_ws",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -209,6 +213,7 @@ dependencies = [
  "iana-time-zone",
  "js-sys",
  "num-traits",
+ "serde",
  "wasm-bindgen",
  "windows-link",
 ]
