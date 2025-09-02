@@ -1,4 +1,4 @@
-use common::ChatMessage;
+use common::{ChatMessage, WebSocketMessage, WebSocketMessageType};
 use web_sys::HtmlTextAreaElement;
 use yew::prelude::*;
 use yew_hooks::use_websocket;
@@ -17,9 +17,18 @@ fn App() -> Html {
     // If ws.message changes -> call function 
     use_effect_with(ws.message.clone(),  move |ws_message| {
         if let Some(ws_msg) = &**ws_message {
-            let chat_message: ChatMessage = serde_json::from_str(&ws_msg).unwrap();
-            cloned_messages.push(chat_message);
-            messages_handler.set(cloned_messages);
+            let websocket_message: WebSocketMessage = serde_json::from_str(&ws_msg).unwrap();
+            match websocket_message.message_type {
+                WebSocketMessageType::NewMessage => {
+                    let msg = websocket_message.message.expect("missing message payload");
+                    cloned_messages.push(msg);
+                    messages_handler.set(cloned_messages);
+                },
+                WebSocketMessageType::UsersList => {
+
+                }
+            }
+            
         }
     });
     let cloned_new_message_handle = new_message_handle.clone();
